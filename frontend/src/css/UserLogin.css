@@ -1,0 +1,32 @@
+.img-container {
+  float: left;
+  width: 45%;
+  padding-left: 20px;
+}
+
+.userlogin-img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  margin-top: 20px;
+}
+
+.form-control {
+  width: 100%;
+  max-width: 600px;
+}
+
+.right-container {
+  float: right;
+  width: 55%; /* Adjusted width */
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  padding: 20px;
+  margin: 20px;
+  max-width: 800px;
+}

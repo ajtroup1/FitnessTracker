@@ -1,0 +1,11 @@
+.main-content {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.navbar {
+  position: fixed; /* Fix the navbar position */
+  top: 0; /* Align the navbar to the top of the viewport */
+  width: 100%; /* Set the width to occupy the entire viewport */
+  z-index: 1000; /* Ensure the navbar appears above other content */
+}

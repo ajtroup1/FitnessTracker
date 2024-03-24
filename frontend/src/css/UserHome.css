@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.background-image {
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-gC2WKXsB4GLSI1-mAYNU0ijuO78-JF8c5Q&usqp=CAU");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+}
+
+.greeting {
+  margin-bottom: 20px;
+}
+
+.report {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.report-title {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.report ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report ul li {
+  margin-bottom: 10px;
+}
