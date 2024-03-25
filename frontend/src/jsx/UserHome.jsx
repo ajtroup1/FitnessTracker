@@ -7,10 +7,22 @@ function UserHome() {
   const [username, setUsername] = useState(Cookies.get("username"));
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true); // State to track loading status
+  const [backgroundIMGs, setBackGroundIMGs] = useState([
+    "https://static.vecteezy.com/system/resources/thumbnails/000/680/562/small/black-and-red-abstract-cut-paper-background.jpg",
+    "https://img.freepik.com/free-photo/young-happy-sportswoman-getting-ready-workout-tying-shoelace-fitness-center_637285-470.jpg?size=626&ext=jpg&ga=GA1.1.2082370165.1711238400&semt=sph",
+    "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/07/Hands-Clapping-Chaulk-Kettlebell.jpg?quality=86&strip=all",
+    "https://thumbs.dreamstime.com/b/closeup-portrait-muscular-man-workout-barbell-gym-brutal-bodybuilder-athletic-six-pack-perfect-abs-shoulders-55122231.jpg",
+    "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all",
+  ]);
 
   useEffect(() => {
     fetchUser();
   }, []);
+
+  const getRandomBackgroundImg = () => {
+    const randomIndex = Math.floor(Math.random() * backgroundIMGs.length);
+    return backgroundIMGs[randomIndex];
+  };
 
   const fetchUser = async () => {
     try {
@@ -52,48 +64,71 @@ function UserHome() {
 
   return (
     <>
-      <div className="container">
-        <div className="background-image">
-          <h1 className="greeting">Hello, {user.firstname}!</h1>
-          <div className="report">
-            <h2 className="report-title">Daily Report</h2>
-            {user.measurementSystem === "imperial" ? (
-              <ul>
-                <li>
-                  <strong>Calorie Target:</strong> {user.targetCalories}
-                </li>
-                <li>
-                  <strong>Current Weight:</strong> {user.weight}
-                </li>
-                <li>
-                  <strong>Target Weight (lbs):</strong> {user.targetWeight}
-                </li>
-                <li>
-                  <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
-                </li>
-                <li>
-                  <strong>Target BFP:</strong> {user.targetBfp}%
-                </li>
-              </ul>
-            ) : (
-              <ul>
-                <li>
-                  <strong>Calorie Target:</strong> {user.targetCalories}
-                </li>
-                <li>
-                  <strong>Target Weight (kilos):</strong> {user.targetWeight}
-                </li>
-                <li>
-                  <strong>Current Weight:</strong> {user.weight}
-                </li>
-                <li>
-                  <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
-                </li>
-                <li>
-                  <strong>Target BFP:</strong> {user.targetBfp}%
-                </li>
-              </ul>
-            )}
+      <div className="main-home-container">
+        <div className="left-home-container">
+          <div className="background-image">
+            <h1 className="greeting">Hello, {user.firstname}!</h1>
+            <div className="report">
+              <h2 className="report-title">Daily Report</h2>
+              {user.measurementSystem === "imperial" ? (
+                <ul>
+                  <li>
+                    <strong>Calorie Target:</strong> {user.targetCalories}
+                  </li>
+                  <li>
+                    <strong>Current Weight:</strong> {user.weight}
+                  </li>
+                  <li>
+                    <strong>Target Weight (lbs):</strong> {user.targetWeight}
+                  </li>
+                  <li>
+                    <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
+                  </li>
+                  <li>
+                    <strong>Target BFP:</strong> {user.targetBfp}%
+                  </li>
+                </ul>
+              ) : (
+                <ul>
+                  <li>
+                    <strong>Calorie Target:</strong> {user.targetCalories}
+                  </li>
+                  <li>
+                    <strong>Target Weight (kilos):</strong> {user.targetWeight}
+                  </li>
+                  <li>
+                    <strong>Current Weight:</strong> {user.weight}
+                  </li>
+                  <li>
+                    <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
+                  </li>
+                  <li>
+                    <strong>Target BFP:</strong> {user.targetBfp}%
+                  </li>
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="right-home-container"
+          style={{
+            backgroundImage: `url(${getRandomBackgroundImg()})`,
+            backgroundSize: "cover",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <div className="right-img-div">
+            <div className="pr-container">
+              <h4>Display PR's here</h4>
+            </div>
+            <div className="daily-container">
+              <h4>Display daily content here</h4>
+            </div>
           </div>
         </div>
       </div>

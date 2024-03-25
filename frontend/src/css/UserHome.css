@@ -1,21 +1,61 @@
-.container {
+.main-home-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Center horizontally */
+  width: 90vw;
+  margin: 40px; /* Add margin around the main container */
+  background-color: purple;
+}
+
+.left-home-container {
   height: 100vh;
-  margin-top: 40px;
+  width: 45%; /* Adjusted width to make both containers evenly sized */
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  background-color: yellowgreen;
+}
+
+.right-home-container {
+  width: 45%; /* Adjusted width to make both containers evenly sized */
+  height: 80vh; /* Adjust the height as needed */
+  margin-left: 20px; /* Adjusted margin to create space between containers */
+  padding: 20px; /* Add padding to the content inside the container */
+  border-radius: 10px; /* Add border radius for a rounded appearance */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  color: white;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-size: cover; /* Ensure the background image covers the entire container */
+  background-position: center; /* Center the background image */
+}
+
+.right-home-container .right-img-div {
+  width: 100%; /* Ensure the content div takes up the entire width of the container */
+  height: 100%; /* Ensure the content div takes up the entire height of the container */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+}
+
+.right-home-container .right-img-div .pr-container,
+.right-home-container .right-img-div .daily-container {
+  margin-top: 20px; /* Add margin between PR and daily content */
 }
 
 .background-image {
   background-image: url("https://static.vecteezy.com/system/resources/thumbnails/000/680/562/small/black-and-red-abstract-cut-paper-background.jpg");
   background-position: center;
   background-color: gray;
-  width: 50%; /* Adjust the width as needed */
-  height: 80vh; /* Adjust the height as needed */
-  margin: 0 auto; /* Center the container horizontally */
-  padding: 20px; /* Add padding to the content inside the container */
-  border-radius: 10px; /* Add border radius for a rounded appearance */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
+  width: 100%; /* Adjusted width to cover the entire container */
+  height: 100%; /* Adjusted height to cover the entire container */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,7 +63,7 @@
   color: white;
   text-align: center;
   background-repeat: no-repeat;
-  background-size: cover; /* Ensure the background image covers the entire container */
+  background-size: cover;
 }
 
 .greeting {

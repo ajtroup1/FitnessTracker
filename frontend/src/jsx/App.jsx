@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Routes,
   Route,
   BrowserRouter as Router,
+  useLocation,
   useNavigate,
 } from "react-router-dom";
 import "../css/App.css";
@@ -11,10 +12,34 @@ import UserLogin from "./UserLogin.jsx";
 import AdminLogin from "./AdminLogin.jsx";
 import UserHome from "./UserHome.jsx";
 import Signup from "./Signup.jsx";
+import Cookies from "js-cookie";
 
 function App() {
   // Initialize the navigate function
   const navigate = useNavigate();
+  const location = useLocation();
+  const [navbarType, setNavbarType] = useState("");
+
+  useEffect(() => {
+    getNavbarType();
+  }, [location]);
+
+  const getNavbarType = () => {
+    const currentpagepath = location.pathname;
+    if (Cookies.get("username") == null) {
+      setNavbarType("not-logged-in");
+    } else if (
+      currentpagepath === "/adminlogin" ||
+      currentpagepath === "/adminhome"
+    ) {
+      setNavbarType("admin");
+    } else if (
+      currentpagepath === "/userlogin" ||
+      currentpagepath === "/userhome"
+    ) {
+      setNavbarType("user");
+    }
+  };
 
   // Function to navigate to UserLogin component
   const goToUserLogin = () => {
@@ -29,27 +54,57 @@ function App() {
   return (
     <>
       {/* NAVBAR */}
-      <nav className="navbar navbar-light bg-light">
-        <div className="navbar-brand">
-          <img
-            src=".\src\assets\fitnessicon.png"
-            height="40"
-            width="auto"
-            className="d-inline-block align-top"
-            alt=""
-          />
-        </div>
-        <div className="navbar-brand">
-          <button className="btn btn-light" onClick={goToUserLogin}>
-            User Login
-          </button>
-        </div>
-        <div className="navbar-brand">
-          <button className="btn btn-light" onClick={goToAdminLogin}>
-            Admin Login
-          </button>
-        </div>
-      </nav>
+      {navbarType === "not-logged-in" && (
+        <nav className="navbar navbar-light bg-light">
+          <div className="navbar-brand">
+            <img
+              src=".\src\assets\fitnessicon.png"
+              height="40"
+              width="auto"
+              className="d-inline-block align-top"
+              alt=""
+            />
+            <button className="btn btn-light" onClick={goToAdminLogin}>
+              Admin Login
+            </button>
+            <button className="btn btn-light" onClick={goToUserLogin}>
+              User Login
+            </button>
+          </div>
+        </nav>
+      )}
+      {navbarType === "user" && (
+        <nav className="navbar navbar-light bg-light">
+          <div className="navbar-brand">
+            <img
+              src=".\src\assets\fitnessicon.png"
+              height="40"
+              width="auto"
+              className="d-inline-block align-top"
+              alt=""
+            />
+            <button className="btn btn-light" onClick={goToUserLogin}>
+              Logout
+            </button>
+          </div>
+        </nav>
+      )}
+      {navbarType === "admin" && (
+        <nav className="navbar navbar-light bg-light">
+          <div className="navbar-brand">
+            <img
+              src=".\src\assets\fitnessicon.png"
+              height="40"
+              width="auto"
+              className="d-inline-block align-top"
+              alt=""
+            />
+            <button className="btn btn-light" onClick={goToAdminLogin}>
+              Lougout
+            </button>
+          </div>
+        </nav>
+      )}
 
       {/* MAIN CONTENT */}
       <div className="main-content" style={{ marginTop: "100px" }}>
@@ -58,7 +113,7 @@ function App() {
           <Route path="/userlogin" element={<UserLogin />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/userhome" element={<UserHome />} />
-          <Route path="/signup" element={<Signup />}/>
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </div>
 
