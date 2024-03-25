@@ -9,3 +9,14 @@
   width: 100%; /* Set the width to occupy the entire viewport */
   z-index: 1000; /* Ensure the navbar appears above other content */
 }
+
+.footer {
+  bottom: 0; /* Align the footer to the bottom of the viewport */
+  left: auto;
+  right: auto;
+  width: 80%;
+  color: white;
+  padding: 20px 40px; /* Add padding to the top and bottom, and increase padding on the right and left sides */
+  margin-left: auto; /* Center the footer horizontally */
+  margin-right: auto;
+}

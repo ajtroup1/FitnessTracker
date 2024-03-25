@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import "../css/UserLogin.css";
 
@@ -55,12 +55,7 @@ function UserLogin() {
     <>
       <div className="content-container">
         <div className="img-container">
-          <img
-            src="https://media.istockphoto.com/id/1325578537/photo/happy-indian-mother-having-fun-with-her-daughter-outdoor-family-and-love-concept-focus-on-mum.jpg?s=612x612&w=0&k=20&c=oSkEIgp2zOGO-ILqE4-MbsIUKZUhKNPNSzrFpSRAUxM="
-            className="userlogin-img"
-          />
-        </div>
-        <div className="right-container">
+          {/* Switched positions (floats) from signup page */}
           <div className="form-container">
             <form>
               <div className="form-group">
@@ -89,8 +84,20 @@ function UserLogin() {
               >
                 Submit
               </button>
+              <div className="signup-link">
+                <Link to="/signup" style={{ fontStyle: "italic" }}>
+                  {" "}
+                  Don't have an account?{" "}
+                </Link>
+              </div>
             </form>
           </div>
+        </div>
+        <div className="right-container">
+          <img
+            src="https://media.istockphoto.com/id/1325578537/photo/happy-indian-mother-having-fun-with-her-daughter-outdoor-family-and-love-concept-focus-on-mum.jpg?s=612x612&w=0&k=20&c=oSkEIgp2zOGO-ILqE4-MbsIUKZUhKNPNSzrFpSRAUxM="
+            className="userlogin-img"
+          />
         </div>
         <div className="clearfix"></div>
       </div>

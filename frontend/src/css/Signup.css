@@ -1,0 +1,65 @@
+.content-container {
+  display: flex;
+  flex-direction: row-reverse; /* Reverse the order of elements */
+  align-items: center;
+}
+
+.img-container {
+  flex: 1; /* Take up remaining space */
+  padding: 20px; /* Add padding for spacing */
+  width: 80%; /* Adjusted width */
+  max-width: 600px; /* Limit the maximum width */
+  margin-bottom: 20px;
+}
+
+.right-container {
+  flex: 1; /* Take up remaining space */
+  position: relative;
+  width: 80%; /* Adjusted width */
+  max-width: 600px;
+  height: 100%;
+  padding-top: 30px;
+}
+
+.login-link {
+  position: absolute; /* Set position to absolute */
+  top: 0; /* Align the link to the top */
+  left: 0; /* Align the link to the left */
+  margin-top: 20px; /* Add margin for spacing */
+  margin-left: 20px; /* Add margin for spacing */
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+h1 {
+  text-align: center; /* Center the heading text */
+  margin-bottom: 20px; /* Add some bottom margin for spacing */
+}
+
+.signup-img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.names-container {
+  display: flex;
+}
+
+.names-container .form-group {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.form-group label {
+  display: block;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+}
+
+.btn-primary {
+  width: 100%; /* Set the width of the button to 100% */
+  margin-top: 20px; /* Add margin from the top */
+}
