@@ -5,6 +5,7 @@ using FitnessTracker.backend.models;
 
 namespace MyApp.Namespace
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -77,8 +78,49 @@ namespace MyApp.Namespace
 
         // POST api/<User>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public string Post([FromBody] User myUser)
         {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(cs))
+                {
+                    connection.Open();
+                    using (MySqlCommand command = new MySqlCommand(
+                        "INSERT INTO user (username, password, firstname, lastname, dateOfBirth, signUpDate, height, weight, bodyFatPct, measurementSystem, picturelink, caloriesToday, targetWeight, targetCalories, targetBfp) " +
+                        "VALUES (@username, @password, @firstname, @lastname, @dateOfBirth, @signUpDate, @height, @weight, @bodyFatPct, @measurementSystem, @picturelink, @caloriesToday, @targetWeight, @targetCalories, @targetBfp)", connection))
+                    {
+                        command.Parameters.AddWithValue("@username", myUser.username);
+                        command.Parameters.AddWithValue("@password", myUser.password);
+                        command.Parameters.AddWithValue("@firstname", myUser.firstname);
+                        command.Parameters.AddWithValue("@lastname", myUser.lastname);
+                        command.Parameters.AddWithValue("@dateOfBirth", myUser.dateOfBirth);
+                        command.Parameters.AddWithValue("@signUpDate", DateTime.Now.Date); //automatically add now as the signup date
+                        command.Parameters.AddWithValue("@height", myUser.height);
+                        command.Parameters.AddWithValue("@weight", myUser.weight);
+                        command.Parameters.AddWithValue("@bodyFatPct", myUser.bodyFatPct);
+                        command.Parameters.AddWithValue("@measurementSystem", myUser.measurementSystem);
+                        command.Parameters.AddWithValue("@pictureLink", myUser.pictureLink);
+                        command.Parameters.AddWithValue("@caloriesToday", myUser.caloriesToday);
+                        command.Parameters.AddWithValue("@targetWeight", myUser.targetWeight);
+                        command.Parameters.AddWithValue("@targetCalories", myUser.targetCalories);
+                        command.Parameters.AddWithValue("@targetBfp", myUser.targetBfp);
+
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+
+                return "User added successfully";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (you can replace Console.WriteLine with your logging mechanism)
+                Console.WriteLine($"Error in PostUser: {ex.Message}");
+
+                // Return a more informative error message
+                return $"Error adding User: {ex.Message}";
+            }
         }
 
         // PUT api/<User>/5

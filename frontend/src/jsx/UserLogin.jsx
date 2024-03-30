@@ -7,8 +7,6 @@ function UserLogin() {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
   const [users, setUsers] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   useEffect(() => {
     fetchUsers();
@@ -55,6 +53,7 @@ function UserLogin() {
     <>
       <div className="content-container">
         <div className="img-container">
+          <h4 className="header">User Login</h4>
           {/* Switched positions (floats) from signup page */}
           <div className="form-container">
             <form>

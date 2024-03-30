@@ -200,7 +200,6 @@ function Signup() {
 
   return (
     <>
-      <h1>Create an Account!</h1>
       <div className="content-container">
         <div className="img-container">
           <img
@@ -213,6 +212,7 @@ function Signup() {
             <Link to="/userlogin"> Back to login </Link>
           </div>
           <div className="form-container">
+            <h1>Create an Account!</h1>
             <form onSubmit={onSubmitMoreSignup}>
               <div className="form-group">
                 <div className="names-container">

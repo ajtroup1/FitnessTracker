@@ -11,6 +11,8 @@ import Home from "./Home.jsx";
 import UserLogin from "./UserLogin.jsx";
 import AdminLogin from "./AdminLogin.jsx";
 import UserHome from "./UserHome.jsx";
+import PR from "./PR.jsx";
+import Meals from "./Meals.jsx";
 import Signup from "./Signup.jsx";
 import Cookies from "js-cookie";
 
@@ -26,16 +28,18 @@ function App() {
 
   const getNavbarType = () => {
     const currentpagepath = location.pathname;
-    if (Cookies.get("username") == null) {
-      setNavbarType("not-logged-in");
-    } else if (
-      currentpagepath === "/adminlogin" ||
-      currentpagepath === "/adminhome"
+    if (
+      Cookies.get("username") == null ||
+      currentpagepath === "/userlogin" ||
+      currentpagepath === "/adminlogin"
     ) {
+      setNavbarType("not-logged-in");
+    } else if (currentpagepath === "/adminhome") {
       setNavbarType("admin");
     } else if (
-      currentpagepath === "/userlogin" ||
-      currentpagepath === "/userhome"
+      currentpagepath === "/userhome" ||
+      currentpagepath === "/pr" ||
+      currentpagepath === "/meals"
     ) {
       setNavbarType("user");
     }
@@ -49,6 +53,17 @@ function App() {
   // Function to navigate to AdminLogin component
   const goToAdminLogin = () => {
     navigate("/admin");
+  };
+
+  //Navigate to user pages
+  const goToPr = () => {
+    navigate("/pr");
+  };
+  const goToMeals = () => {
+    navigate("/meals");
+  };
+  const goToUserHome = () => {
+    navigate("/userhome");
   };
 
   return (
@@ -83,6 +98,15 @@ function App() {
               className="d-inline-block align-top"
               alt=""
             />
+            <button className="btn btn-light" onClick={goToUserHome}>
+              Home
+            </button>
+            <button className="btn btn-light" onClick={goToPr}>
+              PRs
+            </button>
+            <button className="btn btn-light" onClick={goToMeals}>
+              Meals
+            </button>
             <button className="btn btn-light" onClick={goToUserLogin}>
               Logout
             </button>
@@ -107,13 +131,15 @@ function App() {
       )}
 
       {/* MAIN CONTENT */}
-      <div className="main-content" style={{ marginTop: "100px" }}>
+      <div className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/userlogin" element={<UserLogin />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/userhome" element={<UserHome />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/pr" element={<PR />} />
+          <Route path="/meals" element={<Meals />} />
         </Routes>
       </div>
 
