@@ -96,3 +96,9 @@
 .report ul li {
   margin-bottom: 10px;
 }
+
+.fitness-icon {
+  height: 45px;
+  width: auto;
+  margin-top: 5px;
+}

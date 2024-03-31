@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import "../css/UserHome.css"; // Import CSS file for styling
 
 function UserHome() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState(Cookies.get("username"));
   const [user, setUser] = useState({});
   const [PRs, setPRs] = useState([]);
@@ -26,6 +27,10 @@ function UserHome() {
     }
   }, [user]);
 
+  const navigateToPrs = () => {
+    navigate("/pr");
+  };
+
   const getRandomBackgroundImg = () => {
     const randomIndex = Math.floor(Math.random() * backgroundIMGs.length);
     return backgroundIMGs[randomIndex];
@@ -43,6 +48,7 @@ function UserHome() {
         setUser(currentUser);
       }
       console.log("User received:", currentUser);
+      updateLastDayCalories()
     } catch (error) {
       console.error("Error fetching user:", error);
     }
@@ -85,6 +91,43 @@ function UserHome() {
     setUser(currentUser);
   };
 
+  function getIcon(prType) {
+    switch (prType) {
+      case "weight":
+        return (
+          <img
+            src="../src/assets/weights.png"
+            alt="Weight Icon"
+            className="fitness-icon"
+          />
+        );
+      case "run":
+        return (
+          <img
+            src="../src/assets/running.png"
+            alt="Run Icon"
+            className="fitness-icon"
+          />
+        );
+      case "speed":
+        return (
+          <img
+            src="../src/assets/running.png"
+            alt="Speed Icon"
+            className="fitness-icon"
+          />
+        );
+      default:
+        return (
+          <img
+            src="../src/assets/misc.png"
+            alt="Misc Icon"
+            className="fitness-icon"
+          />
+        );
+    }
+  }
+
   // Function to get a random PR for each prType for table
   const getRandomPRs = () => {
     const uniquePrTypes = [...new Set(PRs.map((pr) => pr.prType))]; // Get unique prTypes
@@ -95,6 +138,41 @@ function UserHome() {
     });
     return randomPRs;
   };
+
+  const updateLastDayCalories = async () => {
+    const lastDayCaloriesDate = new Date(user.lastDayCalories);
+    const today = new Date();
+
+    if (lastDayCaloriesDate.toDateString() === today.toDateString()) {
+      // The lastDayCalories date is equal to today's date
+      user.lastDayCalories = new Date().toISOString(); // Update lastDayCalories to current datetime
+
+      try {
+        const response = await fetch(
+          `http://localhost:5282/api/user/${user.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user), // Send updated user object as the request body
+          }
+        );
+
+        if (response.ok) {
+          // User data updated successfully
+          const data = await response.json();
+          console.log("User data updated:", data);
+        } else {
+          console.error("Failed to update user data:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error updating user data:", error);
+      }
+    }
+  };
+
+
 
   // Display loading indicator if data is still loading
   if (loading) {
@@ -115,16 +193,10 @@ function UserHome() {
                     <strong>Calorie Target:</strong> {user.targetCalories}
                   </li>
                   <li>
-                    <strong>Current Weight:</strong> {user.weight}
-                  </li>
-                  <li>
-                    <strong>Target Weight (lbs):</strong> {user.targetWeight}
+                    <strong>Current Weight:</strong> {user.weight}lbs
                   </li>
                   <li>
                     <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
-                  </li>
-                  <li>
-                    <strong>Target BFP:</strong> {user.targetBfp}%
                   </li>
                 </ul>
               ) : (
@@ -133,16 +205,10 @@ function UserHome() {
                     <strong>Calorie Target:</strong> {user.targetCalories}
                   </li>
                   <li>
-                    <strong>Target Weight (kilos):</strong> {user.targetWeight}
-                  </li>
-                  <li>
-                    <strong>Current Weight:</strong> {user.weight}
+                    <strong>Current Weight:</strong> {user.weight}kg
                   </li>
                   <li>
                     <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
-                  </li>
-                  <li>
-                    <strong>Target BFP:</strong> {user.targetBfp}%
                   </li>
                 </ul>
               )}
@@ -176,7 +242,7 @@ function UserHome() {
                     }, {})
                   ).map((pr) => (
                     <tr key={pr.id}>
-                      <td>{pr.prType}</td>
+                      <td>{getIcon(pr.prType)}</td>
                       <td>{pr.workoutName}</td>
                       <td>
                         {pr.prType === "weight"
@@ -191,10 +257,25 @@ function UserHome() {
                 </tbody>
               </table>
             </div>
-              <button className="btn btn-primary" id="more-pr-btn">See more about PRs</button>
+            <button
+              className="btn btn-primary"
+              id="more-pr-btn"
+              onClick={navigateToPrs}
+            >
+              See more about PRs
+            </button>
           </div>
           <div className="bottom-container">
             <h4 className="right-heading">Your Daily Content</h4>
+            <p>
+              Calories today: {user.caloriesToday} / {user.targetCalories}
+            </p>
+            <p>
+              Current weight goal: {user.weight} → {user.targetWeight}
+            </p>
+            <p>
+              Current body fat % goal: {user.bodyFatPct}% → {user.targetBfp}%
+            </p>
           </div>
         </div>
       </div>

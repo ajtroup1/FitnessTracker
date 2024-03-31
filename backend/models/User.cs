@@ -18,5 +18,6 @@ namespace FitnessTracker.backend.models
         public double targetWeight { get; set; }
         public int targetCalories { get; set; }
         public double targetBfp { get; set; }
+        public DateTime lastDayCalories {get; set;}
     }
 }

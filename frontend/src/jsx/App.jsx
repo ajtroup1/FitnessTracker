@@ -31,7 +31,9 @@ function App() {
     if (
       Cookies.get("username") == null ||
       currentpagepath === "/userlogin" ||
-      currentpagepath === "/adminlogin"
+      currentpagepath === "/adminlogin" ||
+      currentpagepath === "/home" ||
+      currentpagepath === "/"
     ) {
       setNavbarType("not-logged-in");
     } else if (currentpagepath === "/adminhome") {

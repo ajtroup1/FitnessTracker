@@ -49,7 +49,8 @@ namespace MyApp.Namespace
                                     caloriesToday = Convert.ToInt32(reader["caloriesToday"]),
                                     targetWeight = Convert.ToDouble(reader["targetWeight"]),
                                     targetCalories = Convert.ToInt32(reader["targetCalories"]),
-                                    targetBfp = Convert.ToDouble(reader["targetBfp"])
+                                    targetBfp = Convert.ToDouble(reader["targetBfp"]),
+                                    lastDayCalories = Convert.ToDateTime(reader["lastDayCalories"])
                                 });
                             }
                         }
