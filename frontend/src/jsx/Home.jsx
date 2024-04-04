@@ -7,15 +7,30 @@ function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   return (
-    <div className="background-container">
-      <div className="background-img-container">
-        <div className="gradient-overlay"></div>
+    <>
+      <div className="home">
+        <div className="background-container">
+          <div className="left-container">
+            <div className="content">
+              <h1>Start Your Fitness Journey With Us!</h1>
+              <p className="description">
+                Start your fitness journey today with our comprehensive fitness
+                app. Whether you're a beginner or an experienced athlete, we
+                have everything you need to achieve your fitness goals.
+              </p>
+            </div>
+          </div>
+          <div className="right-container">Something here</div>
+        </div>
+
+        {/* SATISFIED CUSTOMERS */}
+        <div className="customer-imgs">
+          <img src="../src/assets/satisfiedcustomer1.jpg"></img>
+          <img src="../src/assets/satisfiedcustomer2.png"></img>
+          <img src="../src/assets/satisfiedcustomer3.png"></img>
+        </div>
       </div>
-      <div className="content">
-        <h1>This is the Home Page</h1>
-        {/* Add more content here */}
-      </div>
-    </div>
+    </>
   );
 }
 
