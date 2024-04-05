@@ -47,6 +47,10 @@ function App() {
     }
   };
 
+  const goToHome = () => {
+    navigate("/");
+  };
+
   // Function to navigate to UserLogin component
   const goToUserLogin = () => {
     navigate("/userlogin");
@@ -81,6 +85,9 @@ function App() {
               className="d-inline-block align-top"
               alt=""
             />
+            <button className="btn btn-light" onClick={goToHome}>
+              Home
+            </button>
             <button className="btn btn-light" onClick={goToAdminLogin}>
               Admin Login
             </button>

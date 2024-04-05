@@ -1,18 +1,18 @@
 .main-home-container {
   display: flex;
-  justify-content: center;
-  width: 100%; /* Adjusted width to cover the entire screen */
-  margin: 40px;
+  width: 100%;
+  height: 100vh;
+  margin-top: 68px;
+  background: linear-gradient(to bottom, #4e54c8, #8f94fb, #ffffff);
 }
 
 .left-home-container,
 .right-home-container {
-  width: 40vw; /* Set both containers to the same width */
-  height: 100vh;
+  height: 80%;
   margin: 0 20px; /* Adjusted margin to create space between containers */
   padding: 20px;
+  margin-top: 50px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,34 +25,47 @@
 }
 
 .left-home-container {
-  background-image: url("https://static.vecteezy.com/system/resources/thumbnails/000/680/562/small/black-and-red-abstract-cut-paper-background.jpg");
   background-color: gray;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  width: 65vw;
+  display: flex;
+  flex-direction: column; /* Adjusted to column layout */
+  align-items: center; /* Horizontally center the content */
+  justify-content: flex-end; /* Align content at the bottom */
+}
+.left-home-container h3 {
+  margin-top: 20px;
+  font-weight: bold; /* Make the font bold for better visibility */
+  color: white; /* Set the text color to white */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add a subtle shadow effect */
+  font-size: 40px;
+}
+
+.daily-content {
+  margin-top: auto; /* Push to the bottom */
+  margin-bottom: 16%; /* Adjust margin bottom if needed */
+  width: 35%;
+  font-size: 16px; /* Adjust font size */
+  font-weight: normal; /* Set font weight to normal or any desired weight */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  padding: 20px; /* Add padding for spacing */
+  border-radius: 10px; /* Add border radius for rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow effect */
 }
 
 .right-home-container {
   color: white; /* Change text color to a darker shade */
   font-size: 16px; /* Adjust font size */
   font-weight: normal; /* Set font weight to normal */
+  width: 35vw;
 }
 
-.top-container,
-.bottom-container {
-  /* Your existing styles */
-  font-size: 16px; /* Adjust font size */
-  font-weight: normal; /* Set font weight to normal */
-}
 .top-container {
   width: 100%;
-  height: 50%;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  height: 70%;
+  float: top;
   border-radius: 10px;
-}
-.bottom-container {
-  margin-top: 10px;
-  width: 100%;
-  height: 50%;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
+  margin-bottom: 140px;
 }
 
 .right-heading {
@@ -70,31 +83,6 @@
 }
 #more-pr-btn {
   width: 60%;
-}
-
-.greeting {
-  margin-bottom: 20px;
-}
-
-.report {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.report-title {
-  color: white;
-  margin-bottom: 10px;
-}
-
-.report ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.report ul li {
-  margin-bottom: 10px;
 }
 
 .fitness-icon {

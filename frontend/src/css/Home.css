@@ -1,4 +1,6 @@
-/* Add this CSS rule */
+.home {
+    margin-top: 65px;
+}
 .satisfaction h3 {
   font-family: "Garamond", serif;
   font-size: 40px; /* Adjust the font size as needed */
@@ -7,7 +9,7 @@
 /* Existing CSS remains unchanged */
 .background-container {
   background: linear-gradient(to right, #87cefa, #00ffff);
-  width: 98vw;
+  width: 98.9vw;
   height: 80vh;
   border-radius: 10px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);

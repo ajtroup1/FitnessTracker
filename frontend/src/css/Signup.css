@@ -1,4 +1,5 @@
 .content-container {
+  margin-top: 70px;
   display: flex;
   flex-direction: row-reverse; /* Reverse the order of elements */
   align-items: center;

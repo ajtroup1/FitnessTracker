@@ -9,6 +9,7 @@ function UserHome() {
   const [user, setUser] = useState({});
   const [PRs, setPRs] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [backgroundIMGs, setBackGroundIMGs] = useState([
     "https://img.freepik.com/free-photo/young-happy-sportswoman-getting-ready-workout-tying-shoelace-fitness-center_637285-470.jpg?size=626&ext=jpg&ga=GA1.1.2082370165.1711238400&semt=sph",
     "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/07/Hands-Clapping-Chaulk-Kettlebell.jpg?quality=86&strip=all",
@@ -29,6 +30,45 @@ function UserHome() {
 
   const navigateToPrs = () => {
     navigate("/pr");
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = (param) => {
+    if (param === "edit-user") {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser({
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = user;
+
+    const url = `http://localhost:5282/api/user${user.id}`;
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      const data = await response.json();
+      alert(data.message);
+    } else {
+      alert("PR added successfully!");
+    }
   };
 
   const getRandomBackgroundImg = () => {
@@ -181,7 +221,6 @@ function UserHome() {
     }
   };
 
-
   // Display loading indicator if data is still loading
   if (loading) {
     return <div>Loading...</div>;
@@ -189,45 +228,155 @@ function UserHome() {
 
   return (
     <>
+      {isModalOpen && (
+        <div id="modal">
+          <div id="modal-content">
+            <span className="close" onClick={closeModal}>
+              &times;
+            </span>
+            <form onSubmit={handleSubmit}>
+              <div className="form-column">
+                <div className="form-group">
+                  <label htmlFor="firstname">Username:</label>
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    value={user.username}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="firstname">First Name:</label>
+                  <input
+                    type="text"
+                    id="firstname"
+                    name="firstname"
+                    value={user.firstname}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="lastname">Last Name:</label>
+                  <input
+                    type="text"
+                    id="lastname"
+                    name="lastname"
+                    value={user.lastname}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="targetCalories">Target Calories:</label>
+                  <input
+                    type="number"
+                    id="targetCalories"
+                    name="targetCalories"
+                    style={{ width: "100%" }}
+                    value={user.targetCalories}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="left-column" style={{ float: "left" }}>
+                  <div className="form-column">
+                    <div className="form-group">
+                      <label htmlFor="bodyFatPct">Body Fat %:</label>
+                      <input
+                        type="number"
+                        id="bodyFatPct"
+                        name="bodyFatPct"
+                        style={{ width: "45%" }}
+                        value={user.bodyFatPct}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="weight">Weight:</label>
+                      <input
+                        type="number"
+                        id="weight"
+                        name="weight"
+                        value={user.weight}
+                        style={{ width: "45%" }}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="right-column" style={{ float: "right" }}>
+                  <div className="form-column">
+                    <div className="form-group">
+                      <label htmlFor="targetBfp">Target Body Fat %:</label>
+                      <input
+                        type="number"
+                        id="targetBfp"
+                        name="targetBfp"
+                        style={{ width: "45%" }}
+                        value={user.targetBfp}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="targetWeight">Target Weight:</label>
+                    <input
+                      type="number"
+                      id="targetWeight"
+                      name="targetWeight"
+                      value={user.targetWeight}
+                      style={{ width: "45%" }}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+      )}
+
       <div className="main-home-container">
-        <div className="left-home-container">
-          <div className="left-background-image">
-            <h1 className="greeting">Hello, {user.firstname}!</h1>
-            <div className="report">
-              <h2 className="report-title">Daily Report</h2>
-              {user.measurementSystem === "imperial" ? (
-                <ul>
-                  <li>
-                    <strong>Calorie Target:</strong> {user.targetCalories}
-                  </li>
-                  <li>
-                    <strong>Current Weight:</strong> {user.weight}lbs
-                  </li>
-                  <li>
-                    <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
-                  </li>
-                </ul>
-              ) : (
-                <ul>
-                  <li>
-                    <strong>Calorie Target:</strong> {user.targetCalories}
-                  </li>
-                  <li>
-                    <strong>Current Weight:</strong> {user.weight}kg
-                  </li>
-                  <li>
-                    <strong>Body Fat Percentage:</strong> {user.bodyFatPct}%
-                  </li>
-                </ul>
-              )}
-            </div>
+        <div
+          className="left-home-container"
+          style={{ backgroundImage: `url(${getRandomBackgroundImg()})` }}
+        >
+          <h3>Hello, {user.firstname}</h3>
+          <div className="daily-content">
+            <h4 className="right-heading">Your Daily Content</h4>
+            <p>
+              Calories today: {user.caloriesToday} / {user.targetCalories}{" "}
+            </p>
+            <p>
+              Current weight goal: {user.weight} → {user.targetWeight}{" "}
+            </p>
+            <p>
+              Current body fat % goal: {user.bodyFatPct}% → {user.targetBfp}%
+            </p>
+            <span
+              className="more-pr-text"
+              onClick={() => openModal("edit-user")}
+              style={{
+                color: "white",
+                fontStyle: "italic",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
+            >
+              Want to edit your user information?
+            </span>
           </div>
         </div>
 
-        <div
-          className="right-home-container"
-          style={{ backgroundImage: `url(${getRandomBackgroundImg()})` }}
-        >
+        <div className="right-home-container">
           <div className="top-container">
             <h4 className="right-heading">Your PRs</h4>
             <div className="pr-table-container">
@@ -265,25 +414,18 @@ function UserHome() {
                 </tbody>
               </table>
             </div>
-            <button
-              className="btn btn-primary"
-              id="more-pr-btn"
+            <span
+              className="more-pr-text"
               onClick={navigateToPrs}
+              style={{
+                color: "white",
+                fontStyle: "italic",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
             >
-              See more about PRs
-            </button>
-          </div>
-          <div className="bottom-container">
-            <h4 className="right-heading">Your Daily Content</h4>
-            <p>
-              Calories today: {user.caloriesToday} / {user.targetCalories}
-            </p>
-            <p>
-              Current weight goal: {user.weight} → {user.targetWeight}
-            </p>
-            <p>
-              Current body fat % goal: {user.bodyFatPct}% → {user.targetBfp}%
-            </p>
+              View more PRs
+            </span>
           </div>
         </div>
       </div>

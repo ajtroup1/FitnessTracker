@@ -1,6 +1,6 @@
 .main-content {
-  padding-top: 70px;
-  width: 95vw;
+  /* padding-top: 70px; */
+  width: 100%;
   margin: 0 auto;
   display: flex; /* Add flex display */
   justify-content: center;
