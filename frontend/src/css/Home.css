@@ -1,35 +1,96 @@
+/* Add this CSS rule */
+.satisfaction h3 {
+  font-family: "Garamond", serif;
+  font-size: 40px; /* Adjust the font size as needed */
+}
+
+/* Existing CSS remains unchanged */
 .background-container {
-  display: flex;
-  justify-content: space-between; /* Distributes space between flex items */
-  align-items: center; /* Centers items vertically */
-  background-color: plum;
-  width: 100vw;
+  background: linear-gradient(to right, #87cefa, #00ffff);
+  width: 98vw;
   height: 80vh;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+.background-container h1,
+h2 {
+  font-family: "Garamond", serif;
+  font-size: 45px; /* Adjust the font size as needed */
+}
+.description {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+}
+.registered-trademark {
+  vertical-align: top;
+  font-size: 16px; /* Adjust the font size as needed */
 }
 
 .left-container,
 .right-container {
-  width: 50%;
-  display: flex;
-  justify-content: center; /* Centers items horizontally */
-  align-items: center; /* Centers items vertically */
-  height: 100%;
+  width: 45%;
 }
 
+.right-container {
+  width: 50%; /* Adjust the width as needed */
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.grid-item {
+  width: calc(50% - 10px); /* Adjust the width and margins as needed */
+  margin-bottom: 20px; /* Adjust the margin between items */
+}
+
+.grid-item img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover; /* Maintain aspect ratio */
+}
+
+
 .content {
-  text-align: center; /* Centers text within the content */
+  text-align: center;
 }
 
 .customer-imgs {
   display: flex;
-  justify-content: center; /* Centers the images horizontally */
-  margin-top: 20px; /* Adjust the margin as needed */
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  width: 100%;
 }
 
-.customer-imgs img {
-  width: 200px; /* Adjust the width of the images as needed */
-  margin: 0 10px; /* Adjust the spacing between the images */
+.customer {
+  flex-basis: calc(33.33% - 20px);
+  text-align: center;
+  margin-bottom: 20px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+.customer img {
+  max-width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.customer p {
+  margin-top: 10px;
+}
+
+.satisfaction {
+  margin-top: 15px;
+  text-align: center;
+}

@@ -87,8 +87,8 @@ namespace MyApp.Namespace
                 {
                     connection.Open();
                     using (MySqlCommand command = new MySqlCommand(
-                        "INSERT INTO user (username, password, firstname, lastname, dateOfBirth, signUpDate, height, weight, bodyFatPct, measurementSystem, picturelink, caloriesToday, targetWeight, targetCalories, targetBfp) " +
-                        "VALUES (@username, @password, @firstname, @lastname, @dateOfBirth, @signUpDate, @height, @weight, @bodyFatPct, @measurementSystem, @picturelink, @caloriesToday, @targetWeight, @targetCalories, @targetBfp)", connection))
+                        "INSERT INTO user (username, password, firstname, lastname, dateOfBirth, signUpDate, height, weight, bodyFatPct, measurementSystem, pictureLink, caloriesToday, targetWeight, targetCalories, targetBfp) " +
+                        "VALUES (@username, @password, @firstname, @lastname, @dateOfBirth, @signUpDate, @height, @weight, @bodyFatPct, @measurementSystem, @pictureLink, @caloriesToday, @targetWeight, @targetCalories, @targetBfp)", connection))
                     {
                         command.Parameters.AddWithValue("@username", myUser.username);
                         command.Parameters.AddWithValue("@password", myUser.password);
@@ -126,9 +126,57 @@ namespace MyApp.Namespace
 
         // PUT api/<User>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public string Put(int id, [FromBody] User myUser)
         {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(cs))
+                {
+                    connection.Open();
+                    using (MySqlCommand command = new MySqlCommand(
+                        "UPDATE user SET username = @username, password = @password, firstname = @firstname, " +
+                        "lastname = @lastname, dateOfBirth = @dateOfBirth, signUpDate = @signUpDate, height = @height, " +
+                        "weight = @weight, bodyFatPct = @bodyFatPct, measurementSystem = @measurementSystem, " +
+                        "picturelink = @picturelink, caloriesToday = @caloriesToday, targetWeight = @targetWeight, " +
+                        "targetCalories = @targetCalories, targetBfp = @targetBfp, lastDayCalories = @lastDayCalories WHERE id = @id", connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id); // Add ID parameter for WHERE clause
+                        command.Parameters.AddWithValue("@username", myUser.username);
+                        command.Parameters.AddWithValue("@password", myUser.password);
+                        command.Parameters.AddWithValue("@firstname", myUser.firstname);
+                        command.Parameters.AddWithValue("@lastname", myUser.lastname);
+                        command.Parameters.AddWithValue("@dateOfBirth", myUser.dateOfBirth);
+                        command.Parameters.AddWithValue("@signUpDate", myUser.signUpDate); // Use myUser.signUpDate instead of DateTime.Now.Date
+                        command.Parameters.AddWithValue("@height", myUser.height);
+                        command.Parameters.AddWithValue("@weight", myUser.weight);
+                        command.Parameters.AddWithValue("@bodyFatPct", myUser.bodyFatPct);
+                        command.Parameters.AddWithValue("@measurementSystem", myUser.measurementSystem);
+                        command.Parameters.AddWithValue("@pictureLink", myUser.pictureLink); // Fix parameter name
+                        command.Parameters.AddWithValue("@caloriesToday", myUser.caloriesToday);
+                        command.Parameters.AddWithValue("@targetWeight", myUser.targetWeight);
+                        command.Parameters.AddWithValue("@targetCalories", myUser.targetCalories);
+                        command.Parameters.AddWithValue("@targetBfp", myUser.targetBfp);
+                        command.Parameters.AddWithValue("@lastDayCalories", myUser.lastDayCalories);
+
+
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+
+                return "User updated successfully";
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (you can replace Console.WriteLine with your logging mechanism)
+                Console.WriteLine($"Error in PutUser: {ex.Message}");
+
+                // Return a more informative error message
+                return $"Error updating User: {ex.Message}";
+            }
         }
+
 
         // DELETE api/<User>/5
         [HttpDelete("{id}")]

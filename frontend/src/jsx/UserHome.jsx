@@ -48,7 +48,8 @@ function UserHome() {
         setUser(currentUser);
       }
       console.log("User received:", currentUser);
-      updateLastDayCalories()
+
+      updateLastDayCalories(currentUser);
     } catch (error) {
       console.error("Error fetching user:", error);
     }
@@ -139,23 +140,31 @@ function UserHome() {
     return randomPRs;
   };
 
-  const updateLastDayCalories = async () => {
-    const lastDayCaloriesDate = new Date(user.lastDayCalories);
+  const updateLastDayCalories = async (currentUser) => {
+    if (!currentUser || !currentUser.lastDayCalories) {
+      console.log("No last date accessed found for user");
+      return;
+    }
+
+    const lastDayCaloriesDate = new Date(currentUser.lastDayCalories);
     const today = new Date();
 
-    if (lastDayCaloriesDate.toDateString() === today.toDateString()) {
-      // The lastDayCalories date is equal to today's date
-      user.lastDayCalories = new Date().toISOString(); // Update lastDayCalories to current datetime
+    // Check if the lastDayCalories date is not equal to today's date
+    if (lastDayCaloriesDate.toDateString() !== today.toDateString()) {
+      // Update lastDayCalories to current datetime
+      currentUser.lastDayCalories = today.toISOString(); // Convert to ISO string for SQL datetime
+
+      console.log("Sending updated lastDayCalories user", currentUser);
 
       try {
         const response = await fetch(
-          `http://localhost:5282/api/user/${user.id}`,
+          `http://localhost:5282/api/user/${currentUser.id}`,
           {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(user), // Send updated user object as the request body
+            body: JSON.stringify(currentUser), // Send updated user object as the request body
           }
         );
 
@@ -171,7 +180,6 @@ function UserHome() {
       }
     }
   };
-
 
 
   // Display loading indicator if data is still loading
