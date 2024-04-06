@@ -1,12 +1,16 @@
 import { useState } from "react";
-//import "../css/App.css";
 
 function AdminLogin() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   return (
     <>
-      <h1>This is the admin login page</h1>
+      <div style={{ marginTop: "70px" }}>
+        <h1>
+          This app doesn't need admin capabilities, but put them here if
+          implimenting
+        </h1>
+      </div>
     </>
   );
 }

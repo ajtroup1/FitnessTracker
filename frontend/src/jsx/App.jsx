@@ -12,7 +12,6 @@ import UserLogin from "./UserLogin.jsx";
 import AdminLogin from "./AdminLogin.jsx";
 import UserHome from "./UserHome.jsx";
 import PR from "./PR.jsx";
-import Meals from "./Meals.jsx";
 import Signup from "./Signup.jsx";
 import Cookies from "js-cookie";
 
@@ -65,9 +64,6 @@ function App() {
   const goToPr = () => {
     navigate("/pr");
   };
-  const goToMeals = () => {
-    navigate("/meals");
-  };
   const goToUserHome = () => {
     navigate("/userhome");
   };
@@ -113,9 +109,6 @@ function App() {
             <button className="btn btn-light" onClick={goToPr}>
               PRs
             </button>
-            <button className="btn btn-light" onClick={goToMeals}>
-              Meals
-            </button>
             <button className="btn btn-light" onClick={goToUserLogin}>
               Logout
             </button>
@@ -148,7 +141,6 @@ function App() {
           <Route path="/userhome" element={<UserHome />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/pr" element={<PR />} />
-          <Route path="/meals" element={<Meals />} />
         </Routes>
       </div>
 

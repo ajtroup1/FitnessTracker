@@ -6,16 +6,47 @@ import "../css/UserHome.css"; // Import CSS file for styling
 function UserHome() {
   const navigate = useNavigate();
   const [username, setUsername] = useState(Cookies.get("username"));
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    bodyFatPct: 0,
+    caloriesToday: 0,
+    dateOfBirth: "",
+    firstname: "",
+    height: 0,
+    id: 0,
+    lastDayCalories: "",
+    lastname: "",
+    measurementSystem: "",
+    password: "",
+    pictureLink: "",
+    signUpDate: "",
+    targetBfp: 0,
+    targetCalories: 0,
+    targetWeight: 0,
+    username: "",
+    weight: 0,
+  });
+  const [editedUser, setEditedUser] = useState({
+    bodyFatPct: 0,
+    caloriesToday: 0,
+    dateOfBirth: "",
+    firstname: "",
+    height: 0,
+    id: 0,
+    lastDayCalories: "",
+    lastname: "",
+    measurementSystem: "",
+    password: "",
+    pictureLink: "",
+    signUpDate: "",
+    targetBfp: 0,
+    targetCalories: 0,
+    targetWeight: 0,
+    username: Cookies.get("username"),
+    weight: 0,
+  });
   const [PRs, setPRs] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [backgroundIMGs, setBackGroundIMGs] = useState([
-    "https://img.freepik.com/free-photo/young-happy-sportswoman-getting-ready-workout-tying-shoelace-fitness-center_637285-470.jpg?size=626&ext=jpg&ga=GA1.1.2082370165.1711238400&semt=sph",
-    "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2019/07/Hands-Clapping-Chaulk-Kettlebell.jpg?quality=86&strip=all",
-    "https://thumbs.dreamstime.com/b/closeup-portrait-muscular-man-workout-barbell-gym-brutal-bodybuilder-athletic-six-pack-perfect-abs-shoulders-55122231.jpg",
-    "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all",
-  ]);
 
   useEffect(() => {
     console.clear();
@@ -31,6 +62,9 @@ function UserHome() {
   const navigateToPrs = () => {
     navigate("/pr");
   };
+  const navigateToUserHome = () => {
+    navigate("/userhome");
+  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -39,21 +73,30 @@ function UserHome() {
   const openModal = (param) => {
     if (param === "edit-user") {
       setIsModalOpen(true);
+      setEditedUser(user); // Set edited user state to current user state
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({
+    setEditedUser((prevUser) => ({
+      ...prevUser,
       [name]: value,
-    });
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = user;
 
-    const url = `http://localhost:5282/api/user${user.id}`;
+    const data = editedUser;
+    setUser(editedUser); // Update user state with edited user data
+
+    // If measurement system is imperial, convert to metric before sending
+    if (editedUser.measurementSystem === "imperial") {
+      convertToMetric(editedUser);
+    }
+
+    const url = `http://localhost:5282/api/User/${editedUser.id}`;
     const options = {
       method: "PUT",
       headers: {
@@ -67,13 +110,8 @@ function UserHome() {
       const data = await response.json();
       alert(data.message);
     } else {
-      alert("PR added successfully!");
+      closeModal();
     }
-  };
-
-  const getRandomBackgroundImg = () => {
-    const randomIndex = Math.floor(Math.random() * backgroundIMGs.length);
-    return backgroundIMGs[randomIndex];
   };
 
   const fetchUser = async () => {
@@ -81,15 +119,21 @@ function UserHome() {
       const response = await fetch("http://localhost:5282/api/User");
       const data = await response.json();
       const currentUser = data.find((user) => user.username === username);
-      if (user.measurementSystem == "imperial") {
+      if (currentUser.measurementSystem === "imperial") {
         convertToImperial(currentUser);
       } else {
-        convertToImperial(currentUser);
         setUser(currentUser);
       }
       console.log("User received:", currentUser);
 
-      updateLastDayCalories(currentUser);
+      // Update lastDayCalories and caloriesToday
+      const today = new Date().toISOString().split("T")[0];
+      if (currentUser.lastDayCalories.split("T")[0] !== today) {
+        currentUser.lastDayCalories = today;
+        currentUser.caloriesToday = 0;
+      }
+
+      setUser(currentUser);
     } catch (error) {
       console.error("Error fetching user:", error);
     }
@@ -99,7 +143,6 @@ function UserHome() {
     try {
       const response = await fetch("http://localhost:5282/api/personalrecord");
       const data = await response.json();
-      console.log("ALL PR", data);
 
       // Convert prDate strings to Date objects and extract only the date part
       const formattedData = data.map((item) => ({
@@ -110,10 +153,7 @@ function UserHome() {
       // Filter the data array to get only the items with matching user ID
       const userPRs = formattedData.filter((pr) => pr.userID === user.id);
 
-      console.log("User PRs:", userPRs); // Log user PRs for debugging
-
       setLoading(false); // Set loading to false after user data is fetched
-      console.log("PRs received:", userPRs);
       setPRs(userPRs);
     } catch (error) {
       console.error("Error fetching PRs:", error);
@@ -128,8 +168,22 @@ function UserHome() {
       (currentUser.targetWeight * 2.20462).toFixed(2)
     );
     currentUser.height = parseFloat((currentUser.height * 0.393701).toFixed(2));
-    console.log("converted user: ", currentUser);
+    console.log("converted imperial user: ", currentUser);
     setUser(currentUser);
+  };
+
+  const convertToMetric = (editedUser) => {
+    editedUser.weight = parseFloat((editedUser.weight / 2.20462).toFixed(2));
+    editedUser.targetWeight = parseFloat(
+      (editedUser.targetWeight / 2.20462).toFixed(2)
+    );
+    editedUser.height = parseFloat((editedUser.height / 0.393701).toFixed(2));
+    console.log(
+      "new weight: ",
+      editedUser.weight,
+      " / new target: ",
+      editedUser.targetWeight
+    );
   };
 
   function getIcon(prType) {
@@ -180,47 +234,6 @@ function UserHome() {
     return randomPRs;
   };
 
-  const updateLastDayCalories = async (currentUser) => {
-    if (!currentUser || !currentUser.lastDayCalories) {
-      console.log("No last date accessed found for user");
-      return;
-    }
-
-    const lastDayCaloriesDate = new Date(currentUser.lastDayCalories);
-    const today = new Date();
-
-    // Check if the lastDayCalories date is not equal to today's date
-    if (lastDayCaloriesDate.toDateString() !== today.toDateString()) {
-      // Update lastDayCalories to current datetime
-      currentUser.lastDayCalories = today.toISOString(); // Convert to ISO string for SQL datetime
-
-      console.log("Sending updated lastDayCalories user", currentUser);
-
-      try {
-        const response = await fetch(
-          `http://localhost:5282/api/user/${currentUser.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(currentUser), // Send updated user object as the request body
-          }
-        );
-
-        if (response.ok) {
-          // User data updated successfully
-          const data = await response.json();
-          console.log("User data updated:", data);
-        } else {
-          console.error("Failed to update user data:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error updating user data:", error);
-      }
-    }
-  };
-
   // Display loading indicator if data is still loading
   if (loading) {
     return <div>Loading...</div>;
@@ -234,7 +247,7 @@ function UserHome() {
             <span className="close" onClick={closeModal}>
               &times;
             </span>
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="form-column">
                 <div className="form-group">
                   <label htmlFor="firstname">Username:</label>
@@ -242,7 +255,7 @@ function UserHome() {
                     type="text"
                     id="username"
                     name="username"
-                    value={user.username}
+                    value={editedUser && editedUser.username}
                     onChange={handleChange}
                     required
                   />
@@ -253,7 +266,7 @@ function UserHome() {
                     type="text"
                     id="firstname"
                     name="firstname"
-                    value={user.firstname}
+                    value={editedUser && editedUser.firstname}
                     onChange={handleChange}
                     required
                   />
@@ -264,7 +277,7 @@ function UserHome() {
                     type="text"
                     id="lastname"
                     name="lastname"
-                    value={user.lastname}
+                    value={editedUser && editedUser.lastname}
                     onChange={handleChange}
                     required
                   />
@@ -276,12 +289,15 @@ function UserHome() {
                     id="targetCalories"
                     name="targetCalories"
                     style={{ width: "100%" }}
-                    value={user.targetCalories}
+                    value={editedUser && editedUser.targetCalories}
                     onChange={handleChange}
                     required
                   />
                 </div>
-                <div className="left-column" style={{ float: "left" }}>
+                <div
+                  className="left-column"
+                  style={{ float: "left", width: "45%" }}
+                >
                   <div className="form-column">
                     <div className="form-group">
                       <label htmlFor="bodyFatPct">Body Fat %:</label>
@@ -289,8 +305,8 @@ function UserHome() {
                         type="number"
                         id="bodyFatPct"
                         name="bodyFatPct"
-                        style={{ width: "45%" }}
-                        value={user.bodyFatPct}
+                        style={{ width: "100%" }}
+                        value={editedUser && editedUser.bodyFatPct}
                         onChange={handleChange}
                         required
                       />
@@ -301,15 +317,18 @@ function UserHome() {
                         type="number"
                         id="weight"
                         name="weight"
-                        value={user.weight}
-                        style={{ width: "45%" }}
+                        value={editedUser && editedUser.weight}
+                        style={{ width: "100%" }}
                         onChange={handleChange}
                         required
                       />
                     </div>
                   </div>
                 </div>
-                <div className="right-column" style={{ float: "right" }}>
+                <div
+                  className="right-column"
+                  style={{ float: "right", width: "45%" }}
+                >
                   <div className="form-column">
                     <div className="form-group">
                       <label htmlFor="targetBfp">Target Body Fat %:</label>
@@ -317,8 +336,8 @@ function UserHome() {
                         type="number"
                         id="targetBfp"
                         name="targetBfp"
-                        style={{ width: "45%" }}
-                        value={user.targetBfp}
+                        style={{ width: "100%" }}
+                        value={editedUser && editedUser.targetBfp}
                         onChange={handleChange}
                         required
                       />
@@ -330,15 +349,23 @@ function UserHome() {
                       type="number"
                       id="targetWeight"
                       name="targetWeight"
-                      value={user.targetWeight}
-                      style={{ width: "45%" }}
+                      style={{ width: "100%" }}
+                      value={editedUser && editedUser.targetWeight}
                       onChange={handleChange}
                       required
                     />
                   </div>
                 </div>
               </div>
-              <button type="submit">Submit</button>
+              <div style={{ clear: "both", marginTop: "20px" }}></div>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSubmit}
+                style={{ width: "100%" }}
+              >
+                Submit
+              </button>
             </form>
           </div>
         </div>
@@ -347,32 +374,65 @@ function UserHome() {
       <div className="main-home-container">
         <div
           className="left-home-container"
-          style={{ backgroundImage: `url(${getRandomBackgroundImg()})` }}
+          style={{
+            backgroundImage: `url(https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2016/09/Bodybuilder-Working-Out-His-Upper-Body-With-Cable-Crossover-Exercise.jpg?quality=86&strip=all)`,
+          }}
         >
           <h3>Hello, {user.firstname}</h3>
           <div className="daily-content">
             <h4 className="right-heading">Your Daily Content</h4>
-            <p>
-              Calories today: {user.caloriesToday} / {user.targetCalories}{" "}
-            </p>
-            <p>
-              Current weight goal: {user.weight} → {user.targetWeight}{" "}
-            </p>
-            <p>
-              Current body fat % goal: {user.bodyFatPct}% → {user.targetBfp}%
-            </p>
-            <span
-              className="more-pr-text"
-              onClick={() => openModal("edit-user")}
-              style={{
-                color: "white",
-                fontStyle: "italic",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-            >
-              Want to edit your user information?
-            </span>
+            {user.measurementSystem === "imperial" && (
+              <>
+                <p>
+                  Calories today: {user.caloriesToday} / {user.targetCalories}{" "}
+                </p>
+                <p>
+                  Current weight goal: {user.weight}lbs → {user.targetWeight}lbs{" "}
+                </p>
+                <p>
+                  Current body fat % goal: {user.bodyFatPct}% → {user.targetBfp}
+                  %
+                </p>
+                <span
+                  className="edit-text"
+                  onClick={() => openModal("edit-user")}
+                  style={{
+                    color: "white",
+                    fontStyle: "italic",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Want to edit your user information?
+                </span>
+              </>
+            )}
+            {user.measurementSystem === "metric" && (
+              <>
+                <p>
+                  Calories today: {user.caloriesToday} / {user.targetCalories}{" "}
+                </p>
+                <p>
+                  Current weight goal: {user.weight}kg → {user.targetWeight}kg{" "}
+                </p>
+                <p>
+                  Current body fat % goal: {user.bodyFatPct}% → {user.targetBfp}
+                  %
+                </p>
+                <span
+                  className="edit-text"
+                  onClick={() => openModal("edit-user")}
+                  style={{
+                    color: "white",
+                    fontStyle: "italic",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  Want to edit your user information?
+                </span>
+              </>
+            )}
           </div>
         </div>
 

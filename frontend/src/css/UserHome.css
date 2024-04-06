@@ -46,6 +46,8 @@
   margin-bottom: 16%; /* Adjust margin bottom if needed */
   width: 35%;
   font-size: 16px; /* Adjust font size */
+  width: 400px;
+  height: auto;
   font-weight: normal; /* Set font weight to normal or any desired weight */
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
   padding: 20px; /* Add padding for spacing */
@@ -89,4 +91,9 @@
   height: 45px;
   width: auto;
   margin-top: 5px;
+}
+
+#modal-content {
+  max-height: 80vh; /* Set maximum height to 80% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */ 
 }
